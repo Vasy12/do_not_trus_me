@@ -7,9 +7,11 @@ axios.interceptors.request.use( function (config) {
   return config;
 } );
 
-export function postTask () {
-  return axios.post( 'http://192.168.0.106:3000/api/task', {
-    value: 'Test value from axios.',
-    deadline: '2020-03-20',
-  } );
+/**
+ *
+ * @param {object} data
+ * @return {Promise<AxiosResponse<T>>}
+ */
+export async function postTask (data) {
+  return axios.post( 'http://192.168.0.106:3000/api/task', data );
 }
