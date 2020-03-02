@@ -15,3 +15,7 @@ axios.interceptors.request.use( function (config) {
 export async function postTask (data) {
   return axios.post( 'http://192.168.0.106:3000/api/task', data );
 }
+
+export async function getUserTasks () {
+  return axios.get( 'http://192.168.0.106:3000/api/tasks' );
+}
