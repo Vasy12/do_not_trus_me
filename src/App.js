@@ -1,72 +1,23 @@
 import React                      from 'react';
 import './App.css';
-import {  getUserTasks } from './api';
-import TaskForm                   from './components/TaskForm';
+import UsersList                  from './components/UsersList';
+import TasksList                  from './components/TasksList';
+import DataLoader                 from './components/DataLoader';
+import { getUsers, getUserTasks } from './api';
 
-class App extends React.Component {
+function App () {
+  return (
+    <div style={{ display: 'flex' }}>
+      <DataLoader getData={getUserTasks} render={({ items, ...rest }) => {
+        return <TasksList {...rest} tasks={items}/>;
+      }}/>
 
-  constructor (props) {
-    super( props );
-    this.state = {
-      value: '',
-      deadline: '',
-      isDone: false,
-      isFetching: false,
-      tasks: [],
-      error: null,
-    };
-  }
+      <DataLoader getData={getUsers} render={({ items, ...rest }) => {
+        return <UsersList {...rest} users={items}/>;
+      }}/>
 
-  async componentDidMount () {
-    try {
-      this.setState( {
-                       isFetching: true
-                     } );
-      const { data: tasks } = await getUserTasks();
-
-      this.setState( {
-                       tasks
-                     } );
-
-    } catch (e) {
-      this.setState( {
-                       error: e.response.error,
-                     } );
-    } finally {
-      this.setState( {
-                       isFetching: false,
-                     } );
-    }
-
-  }
-
-  onSubmit = (newTask) => {
-
-    this.setState( {
-                     tasks: [newTask, ...this.state.tasks]
-                   } );
-  };
-
-  render () {
-
-    const { tasks, isFetching } = this.state;
-
-    return (
-      <div>
-        <TaskForm onSubmit={this.onSubmit}/>
-        <ul>
-          {
-            isFetching && <li>Loading...</li>
-          }
-          {
-            tasks.map( item => (
-              <li key={item.id}>{`${item.value} ${item.deadline}. Completed: ${item.isDone}`}</li>
-            ) )
-          }
-        </ul>
-      </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default App;

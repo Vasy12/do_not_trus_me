@@ -3,11 +3,19 @@ import PropTypes from 'prop-types';
 
 function TasksList (props) {
 
-  return (
-    <ul>
+  const { tasks, isFetching, error, } = props;
 
-    </ul>
+  return (
+    <ol>
+      {
+        tasks.map( item => (<li key={item.id}>{`${item.value} ${item.isDone}`}</li>) )
+      }
+      {
+        isFetching && (<li>Loading...</li>)
+      }
+    </ol>
   );
+
 }
 
 TasksList.propTypes = {
@@ -15,13 +23,13 @@ TasksList.propTypes = {
                                                id: PropTypes.oneOfType( [
                                                                           PropTypes.string,
                                                                           PropTypes.number,
-
                                                                         ] ).isRequired,
-    value: PropTypes.string.isRequired,
-    deadline: PropTypes.string,
+                                               value: PropTypes.string.isRequired,
+                                               isDone: PropTypes.bool.isRequired,
+                                               deadline: PropTypes.string.isRequired,
 
-
-                                             } ) )
+                                             } ) ).isRequired,
+  isFetching: PropTypes.bool.isRequired,
 };
 
 export default TasksList;
