@@ -1,6 +1,7 @@
 import React                      from 'react';
 import './App.css';
-import { postTask, getUserTasks } from './api';
+import {  getUserTasks } from './api';
+import TaskForm                   from './components/TaskForm';
 
 class App extends React.Component {
 
@@ -39,52 +40,20 @@ class App extends React.Component {
 
   }
 
-  createTask = async (e) => {
-    e.preventDefault();
-    const { data } = await postTask( {
-                                       value: this.state.value,
-                                       deadline: this.state.deadline,
-                                       isDone: this.state.isDone,
-                                     } );
-    this.setState( {
-                     tasks: [data, ...this.state.tasks]
-                   } );
-  };
+  onSubmit = (newTask) => {
 
-  handleChange = e => {
-    const { target } = e;
     this.setState( {
-                     [target.name]: target[target.type === 'checkbox'
-                                           ? 'checked'
-                                           : 'value'],
+                     tasks: [newTask, ...this.state.tasks]
                    } );
   };
 
   render () {
 
-    const { value, deadline, isDone, tasks, isFetching } = this.state;
+    const { tasks, isFetching } = this.state;
 
     return (
       <div>
-        <form onSubmit={this.createTask}>
-          <label htmlFor="taskValueInput">
-            <span>Task value: </span>
-            <input id="taskValueInput" type="text" name="value" value={value} onChange={this.handleChange}/>
-          </label>
-          <br/>
-          <label htmlFor="taskDateInput">
-            <span>Task deadline: </span>
-            <input id="taskDateInput" type="date" name="deadline" value={deadline} onChange={this.handleChange}/>
-          </label>
-          <br/>
-          <label htmlFor="taskIsDoneInput">
-            <span>Is done: </span>
-            <input id="taskIsDoneInput" type="checkbox" name="isDone" checked={isDone}
-                   onChange={this.handleChange}/>
-          </label>
-          <br/>
-          <input type="submit"/>
-        </form>
+        <TaskForm onSubmit={this.onSubmit}/>
         <ul>
           {
             isFetching && <li>Loading...</li>
