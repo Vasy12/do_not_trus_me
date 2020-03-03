@@ -1,23 +1,32 @@
-import React                      from 'react';
-import './App.css';
-import UsersList                  from './components/UsersList';
-import TasksList                  from './components/TasksList';
-import DataLoader                 from './components/DataLoader';
-import { getUsers, getUserTasks } from './api';
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+}            from 'react-router-dom';
 
-function App () {
+import Home     from './pages/Home.js';
+import About    from './pages/About.js';
+import Contacts from './pages/Contacts.js';
+
+export default function BasicExample () {
   return (
-    <div style={{ display: 'flex' }}>
-      <DataLoader getData={getUserTasks} render={({ items, ...rest }) => {
-        return <TasksList {...rest} tasks={items}/>;
-      }}/>
+    <Router>
+      <Switch>
+        <Route exact path="/">
+          <Home/>
+        </Route>
 
-      <DataLoader getData={getUsers} render={({ items, ...rest }) => {
-        return <UsersList {...rest} users={items}/>;
-      }}/>
 
-    </div>
+        <Route path="/about">
+          <About/>
+        </Route>
+        <Route path="/contacts">
+          <Contacts/>
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
-export default App;
+
