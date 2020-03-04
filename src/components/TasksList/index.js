@@ -1,14 +1,16 @@
-import React     from 'react';
-import PropTypes from 'prop-types';
+import React            from 'react';
+import PropTypes        from 'prop-types';
+import listWithData     from '../HOCs/listWithData.js';
+import { getUserTasks } from '../../api';
 
 function TasksList (props) {
 
-  const { tasks, isFetching, error, } = props;
+  const { items, isFetching, error, } = props;
 
   return (
     <ol>
       {
-        tasks.map( item => (<li key={item.id}>{`${item.value} ${item.isDone}`}</li>) )
+        items.map( item => (<li key={item.id}>{`${item.value} ${item.isDone}`}</li>) )
       }
       {
         isFetching && (<li>Loading...</li>)
@@ -32,4 +34,4 @@ TasksList.propTypes = {
   isFetching: PropTypes.bool.isRequired,
 };
 
-export default TasksList;
+export default listWithData( getUserTasks, TasksList );
