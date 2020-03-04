@@ -1,7 +1,7 @@
 import React            from 'react';
 import PropTypes        from 'prop-types';
 import listWithData     from '../HOCs/listWithData.js';
-import { getUserTasks } from '../../api';
+import { getUserTasks } from '../../api/taskController.js';
 
 function TasksList (props) {
 
@@ -21,7 +21,7 @@ function TasksList (props) {
 }
 
 TasksList.propTypes = {
-  tasks: PropTypes.arrayOf( PropTypes.shape( {
+  items: PropTypes.arrayOf( PropTypes.shape( {
                                                id: PropTypes.oneOfType( [
                                                                           PropTypes.string,
                                                                           PropTypes.number,
@@ -33,5 +33,7 @@ TasksList.propTypes = {
                                              } ) ).isRequired,
   isFetching: PropTypes.bool.isRequired,
 };
+
+
 
 export default listWithData( getUserTasks, TasksList );
